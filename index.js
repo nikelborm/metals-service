@@ -21,8 +21,10 @@ const httpServer = http.createServer(app);
 
 app.use(compression());
 app.use(cors());
+app.options('*', cors());
 
-app.get("/api/metalCosts", (request, clientResponse) => {
+const metalCostsMiddleware = (request, clientResponse) => {
+  console.log('asd');
   https
     .get("https://www.moneymetals.com/ajax/spot-prices", (pricesResponse) => {
       let data = "";
@@ -34,8 +36,8 @@ app.get("/api/metalCosts", (request, clientResponse) => {
 
       // The whole response has been received. Print out the result.
       pricesResponse.on("end", () => {
+        clientResponse.header("Access-Control-Allow-Origin", "*");
         try {
-          JSON.parse('asd')
           const costsDataWithUselessFields = JSON.parse(data);
 
           const costsWithUselessEntries = Object.entries(costsDataWithUselessFields);
@@ -60,6 +62,12 @@ app.get("/api/metalCosts", (request, clientResponse) => {
     .on("error", (err) => {
       console.error("Error: " + err.message);
     });
+};
+
+app.get("/api/metalCosts", metalCostsMiddleware);
+
+app.get("/", (request, response) => {
+  response.send("<html><body></body></html>").status(200);
 });
 
 httpServer.listen(serverPort, function () {
