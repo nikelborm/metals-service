@@ -52,6 +52,7 @@ const metalCostsMiddleware = (request, clientResponse) => {
             payload: usefulCosts
           });
         } catch (error) {
+          console.error("Error: " + error.message);
           clientResponse.status(500).json({
             isOk: false,
             message: 'Metals API unavailable',
@@ -61,6 +62,10 @@ const metalCostsMiddleware = (request, clientResponse) => {
     })
     .on("error", (err) => {
       console.error("Error: " + err.message);
+      clientResponse.status(500).json({
+        isOk: false,
+        message: 'Metals API unavailable',
+      })
     });
 };
 
