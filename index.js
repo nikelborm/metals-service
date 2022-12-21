@@ -1,6 +1,6 @@
 import http from "http";
 import https from "https";
-import express, { response } from "express";
+import express from "express";
 import compression from "compression";
 import cors from "cors";
 
@@ -24,7 +24,7 @@ app.use(cors());
 app.options('*', cors());
 
 const metalCostsMiddleware = (request, clientResponse) => {
-  console.log('asd');
+  console.log('metalCostsMiddleware was called');
   https
     .get("https://www.moneymetals.com/ajax/spot-prices", (pricesResponse) => {
       let data = "";
