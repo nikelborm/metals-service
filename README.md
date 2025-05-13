@@ -1,4 +1,4 @@
-# Description
+# Precious metals service
 
 Server expects process env variable `PORT` to be present. If it's not, server will default to 3000 port
 
